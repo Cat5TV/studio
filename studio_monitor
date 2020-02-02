@@ -12,10 +12,12 @@ pin_live=18
 # Configure Wi-Fi Check
 
 pin_robbie=17
+pin_bekah=17
 pin_sasha=27
 pin_jeff=22
 
 ip_robbie=10.0.0.50
+ip_bekah=10.0.0.53
 ip_sasha=10.0.0.52
 ip_jeff=10.0.0.51
 
@@ -68,6 +70,17 @@ ip_jeff=10.0.0.51
             /usr/local/bin/gpio -g write $pin_robbie 1 > /dev/null 2>&1
           fi
           lastrobbie=$robbie
+        fi
+        bekah=$(./ping $ip_bekah)
+        if [[ $bekah != $lastbekah ]]; then
+          if [[ $bekah == 0 ]]; then
+            echo "$stamp - Bekah is not at the studio.";
+            /usr/local/bin/gpio -g write $pin_bekah 0 > /dev/null 2>&1
+          else
+            echo "$stamp - Bekah arrived at the studio.";
+            /usr/local/bin/gpio -g write $pin_bekah 1 > /dev/null 2>&1
+          fi
+          lastbekah=$bekah
         fi
         sasha=$(./ping $ip_sasha)
         if [[ $sasha != $lastsasha ]]; then
