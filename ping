@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+  $host = trim($argv[1]);
+  $ping = exec('ping ' . $host . ' -a -q -c 1');
+  $result = array();
+  // rtt min/avg/max/mdev = 108.428/108.428/108.428/0.000
+  if (strlen($ping) > 0) {
+    $tmp=@explode('=', $ping);
+    $result=@explode('/', trim($tmp[1]));
+  }
+  if (count($result) > 0) {
+    // Now we know the device is connected; do something
+    echo '1';
+  } else {
+    // Device is not connected.
+    echo '0';
+  }
+?>

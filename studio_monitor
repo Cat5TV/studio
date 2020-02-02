@@ -1,0 +1,119 @@
+#!/bin/bash
+
+# Actual realtime live status
+api=https://live.cat5.tv/api/realtime
+
+# Toggle between on and off-air every 30 seconds
+#api=https://live.cat5.tv/api/test
+
+# Which GPIO pin to use for live light
+pin_live=18
+
+# Configure Wi-Fi Check
+
+pin_robbie=17
+pin_sasha=27
+pin_jeff=22
+
+ip_robbie=10.0.0.50
+ip_sasha=10.0.0.52
+ip_jeff=10.0.0.51
+
+
+  if [[ -e /usr/local/bin/gpio ]]; then
+
+    # Setup GPIO
+
+      # Set the pin for output
+      /usr/local/bin/gpio -g mode $pin_live output > /dev/null 2>&1
+
+      # Clear light state (turn off the power to GPIO pin)
+      /usr/local/bin/gpio -g write $pin_live 0 > /dev/null 2>&1
+
+      lastlive=3 # An impossible scenario, so first run will always not match
+      lastrobbie=3
+      lastsasha=3
+      lastjeff=3
+
+      while :
+      do
+
+        # Live Light
+        live=$(wget $api -q -O -)
+        if [[ $live != $lastlive ]]; then
+          stamp=$(date +"%r %A %B %d, %Y")
+          if [[ $lastlive == "3" ]]; then
+            echo "$stamp - Script Started."
+          fi
+          if [[ $live == "0" ]]; then
+            echo "$stamp - Category5 is Off Air."
+            /usr/local/bin/gpio -g write $pin_live 0 > /dev/null 2>&1
+          elif [[ $live == "1" ]]; then
+            echo "$stamp - Category5 is On Air."
+            /usr/local/bin/gpio -g write $pin_live 1 > /dev/null 2>&1
+          else
+            echo "$stamp - Unknown: $live"
+          fi
+          lastlive=$live
+        fi
+
+        # WiFi Check
+        robbie=$(./ping $ip_robbie)
+        if [[ $robbie != $lastrobbie ]]; then
+          if [[ $robbie == 0 ]]; then
+            echo "$stamp - Robbie is not at the studio.";
+            /usr/local/bin/gpio -g write $pin_robbie 0 > /dev/null 2>&1
+          else
+            echo "$stamp - Robbie arrived at the studio.";
+            /usr/local/bin/gpio -g write $pin_robbie 1 > /dev/null 2>&1
+          fi
+          lastrobbie=$robbie
+        fi
+        sasha=$(./ping $ip_sasha)
+        if [[ $sasha != $lastsasha ]]; then
+          if [[ $sasha == 0 ]]; then
+            echo "$stamp - Sasha is not at the studio.";
+            /usr/local/bin/gpio -g write $pin_sasha 0 > /dev/null 2>&1
+          else
+            echo "$stamp - Sasha arrived at the studio.";
+            /usr/local/bin/gpio -g write $pin_sasha 1 > /dev/null 2>&1
+          fi
+          lastsasha=$sasha
+        fi
+        jeff=$(./ping $ip_jeff)
+        if [[ $jeff != $lastjeff ]]; then
+          if [[ $jeff == 0 ]]; then
+            echo "$stamp - Jeff is not at the studio.";
+            /usr/local/bin/gpio -g write $pin_jeff 0 > /dev/null 2>&1
+          else
+            echo "$stamp - Jeff arrived at the studio.";
+            /usr/local/bin/gpio -g write $pin_jeff 1 > /dev/null 2>&1
+          fi
+          lastjeff=$jeff
+        fi
+
+        sleep 10
+      done
+
+  else
+
+    echo "Installing needed components..."
+
+    if [[ ! -e /usr/bin/git ]]; then
+      apt -y install git
+    fi
+
+    if [[ ! -d /usr/local/bin/gpio ]]; then
+      apt-get -y install libc6-dev
+      cd /tmp
+      git clone https://github.com/Cat5TV/WiringPi
+      cd WiringPi
+      ./build # The build process places the compiled gpio application in /usr/local/bin/
+      rm -rf /tmp/wiringPi
+    fi
+
+    echo "Finished. Please run again."
+
+  fi
+
+
