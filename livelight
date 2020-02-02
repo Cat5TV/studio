@@ -6,8 +6,8 @@ api=https://live.cat5.tv/api/realtime
 # Toggle between on and off-air every 30 seconds
 #api=https://live.cat5.tv/api/test
 
-# Which GPIO pin to use
-pin=18
+# Which GPIO pin to use for live light
+pin_live=18
 
 
   if [[ -e /usr/local/bin/gpio ]]; then
@@ -15,10 +15,10 @@ pin=18
     # Setup GPIO
 
       # Set the pin for output
-      /usr/local/bin/gpio -g mode $pin output > /dev/null 2>&1
+      /usr/local/bin/gpio -g mode $pin_live output > /dev/null 2>&1
 
       # Clear light state (turn off the power to GPIO pin)
-      /usr/local/bin/gpio -g write $pin 0 > /dev/null 2>&1
+      /usr/local/bin/gpio -g write $pin_live 0 > /dev/null 2>&1
 
       lastlive=3 # An impossible scenario, so first run will always not match
 
@@ -32,10 +32,10 @@ pin=18
           fi
           if [[ $live == "0" ]]; then
             echo "$stamp - Off-Air"
-            /usr/local/bin/gpio -g write $pin 0 > /dev/null 2>&1
+            /usr/local/bin/gpio -g write $pin_live 0 > /dev/null 2>&1
           elif [[ $live == "1" ]]; then
             echo "$stamp - On-Air"
-            /usr/local/bin/gpio -g write $pin 1 > /dev/null 2>&1
+            /usr/local/bin/gpio -g write $pin_live 1 > /dev/null 2>&1
           else
             echo "$stamp - Unknown: $live"
           fi
