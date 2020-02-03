@@ -7,15 +7,15 @@ api=https://live.cat5.tv/api/realtime
 #api=https://live.cat5.tv/api/test
 
 # Which GPIO pin to use for live light
-pin_live=26
+pin_live=26 # Relay Channel 6
 
 # Configure Wi-Fi Check
 
-pin_robbie=21
-pin_bekah=22
-pin_sasha=23
-pin_jeff=24
-# Still have Pin 25 free for future expansion
+pin_robbie=21 # Relay Channel 1
+pin_bekah=22 # Relay Channel 2
+pin_sasha=23 # Relay Channel 3
+pin_jeff=24 # Relay Channel 4
+# Still have Pin 25 / Relay Channel 5 free for future expansion
 
 ip_robbie=10.0.0.50
 ip_bekah=10.0.0.53
