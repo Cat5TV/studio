@@ -7,14 +7,15 @@ api=https://live.cat5.tv/api/realtime
 #api=https://live.cat5.tv/api/test
 
 # Which GPIO pin to use for live light
-pin_live=18
+pin_live=21
 
 # Configure Wi-Fi Check
 
-pin_robbie=17
-pin_bekah=17
-pin_sasha=27
-pin_jeff=22
+pin_robbie=22
+pin_bekah=23
+pin_sasha=24
+pin_jeff=25
+# Still have Pin 26 free for future expansion
 
 ip_robbie=10.0.0.50
 ip_bekah=10.0.0.53
@@ -60,6 +61,7 @@ ip_jeff=10.0.0.51
         fi
 
         # WiFi Check
+
         robbie=$(./ping $ip_robbie)
         if [[ $robbie != $lastrobbie ]]; then
           if [[ $robbie == 0 ]]; then
@@ -71,6 +73,7 @@ ip_jeff=10.0.0.51
           fi
           lastrobbie=$robbie
         fi
+
         bekah=$(./ping $ip_bekah)
         if [[ $bekah != $lastbekah ]]; then
           if [[ $bekah == 0 ]]; then
@@ -82,6 +85,7 @@ ip_jeff=10.0.0.51
           fi
           lastbekah=$bekah
         fi
+
         sasha=$(./ping $ip_sasha)
         if [[ $sasha != $lastsasha ]]; then
           if [[ $sasha == 0 ]]; then
@@ -93,6 +97,7 @@ ip_jeff=10.0.0.51
           fi
           lastsasha=$sasha
         fi
+
         jeff=$(./ping $ip_jeff)
         if [[ $jeff != $lastjeff ]]; then
           if [[ $jeff == 0 ]]; then
