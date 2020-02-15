@@ -55,7 +55,19 @@ ip_jeff=10.0.0.51
             echo "$stamp - Category5 is On Air."
             /usr/local/bin/gpio -g write $pin_live 1 > /dev/null 2>&1
           else
-            echo "$stamp - Unknown: $live"
+            # We didn't get either a 0 or 1 reply from the API
+            # Test to see if Internet is down
+            wget -q --spider https://google.com/
+            if [ $? -eq 0 ]; then
+              # Don't change lamp state, just in case the API went offline for a moment
+              # Just log the issue
+              echo "$stamp - API Didn't Respond Correctly Even Though Internet is Online - State Unknown"
+            else
+              # The failed response is due to an Internet outage, so turn off the light
+              # We can't possibly be on the air if our Internet is down
+              echo "$stamp - Category5 is Off Air Due to Internet Outage."
+              /usr/local/bin/gpio -g write $pin_live 0 > /dev/null 2>&1
+            fi
           fi
           lastlive=$live
         fi
