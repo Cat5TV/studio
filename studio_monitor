@@ -38,6 +38,10 @@ ip_jeff=10.0.0.51
       lastsasha=3
       lastjeff=3
 
+      stamp () {
+        stamp=$(date +"%r %A %B %d, %Y")
+      }
+
       verbiage_negative="is not at"
       verbiage_positive="is"
       while :
@@ -46,7 +50,7 @@ ip_jeff=10.0.0.51
         # Live Light
         live=$(wget $api -q -O -)
         if [[ $live != $lastlive ]]; then
-          stamp=$(date +"%r %A %B %d, %Y")
+          stamp
           if [[ $lastlive == "3" ]]; then
             echo "$stamp - Script Started."
           fi
@@ -77,6 +81,7 @@ ip_jeff=10.0.0.51
         # WiFi Check
 
         robbie=$(./ping $ip_robbie)
+        stamp
         if [[ $robbie != $lastrobbie ]]; then
           if [[ $robbie == 0 ]]; then
             echo "$stamp - Robbie $verbiage_negative the studio.";
@@ -89,6 +94,7 @@ ip_jeff=10.0.0.51
         fi
 
         bekah=$(./ping $ip_bekah)
+        stamp
         if [[ $bekah != $lastbekah ]]; then
           if [[ $bekah == 0 ]]; then
             echo "$stamp - Bekah $verbiage_negative the studio.";
@@ -101,6 +107,7 @@ ip_jeff=10.0.0.51
         fi
 
         sasha=$(./ping $ip_sasha)
+        stamp
         if [[ $sasha != $lastsasha ]]; then
           if [[ $sasha == 0 ]]; then
             echo "$stamp - Sasha $verbiage_negative the studio.";
@@ -113,6 +120,7 @@ ip_jeff=10.0.0.51
         fi
 
         jeff=$(./ping $ip_jeff)
+        stamp
         if [[ $jeff != $lastjeff ]]; then
           if [[ $jeff == 0 ]]; then
             echo "$stamp - Jeff $verbiage_negative the studio.";
