@@ -38,6 +38,8 @@ ip_jeff=10.0.0.51
       lastsasha=3
       lastjeff=3
 
+      verbiage_negative="is not at"
+      verbiage_positive="is"
       while :
       do
 
@@ -77,10 +79,10 @@ ip_jeff=10.0.0.51
         robbie=$(./ping $ip_robbie)
         if [[ $robbie != $lastrobbie ]]; then
           if [[ $robbie == 0 ]]; then
-            echo "$stamp - Robbie is not at the studio.";
+            echo "$stamp - Robbie $verbiage_negative the studio.";
             /usr/local/bin/gpio -g write $pin_robbie 0 > /dev/null 2>&1
           else
-            echo "$stamp - Robbie arrived at the studio.";
+            echo "$stamp - Robbie $verbiage_positive at the studio.";
             /usr/local/bin/gpio -g write $pin_robbie 1 > /dev/null 2>&1
           fi
           lastrobbie=$robbie
@@ -89,10 +91,10 @@ ip_jeff=10.0.0.51
         bekah=$(./ping $ip_bekah)
         if [[ $bekah != $lastbekah ]]; then
           if [[ $bekah == 0 ]]; then
-            echo "$stamp - Bekah is not at the studio.";
+            echo "$stamp - Bekah $verbiage_negative the studio.";
             /usr/local/bin/gpio -g write $pin_bekah 0 > /dev/null 2>&1
           else
-            echo "$stamp - Bekah arrived at the studio.";
+            echo "$stamp - Bekah $verbiage_positive at the studio.";
             /usr/local/bin/gpio -g write $pin_bekah 1 > /dev/null 2>&1
           fi
           lastbekah=$bekah
@@ -101,10 +103,10 @@ ip_jeff=10.0.0.51
         sasha=$(./ping $ip_sasha)
         if [[ $sasha != $lastsasha ]]; then
           if [[ $sasha == 0 ]]; then
-            echo "$stamp - Sasha is not at the studio.";
+            echo "$stamp - Sasha $verbiage_negative the studio.";
             /usr/local/bin/gpio -g write $pin_sasha 0 > /dev/null 2>&1
           else
-            echo "$stamp - Sasha arrived at the studio.";
+            echo "$stamp - Sasha $verbiage_positive at the studio.";
             /usr/local/bin/gpio -g write $pin_sasha 1 > /dev/null 2>&1
           fi
           lastsasha=$sasha
@@ -113,16 +115,17 @@ ip_jeff=10.0.0.51
         jeff=$(./ping $ip_jeff)
         if [[ $jeff != $lastjeff ]]; then
           if [[ $jeff == 0 ]]; then
-            echo "$stamp - Jeff is not at the studio.";
+            echo "$stamp - Jeff $verbiage_negative the studio.";
             /usr/local/bin/gpio -g write $pin_jeff 0 > /dev/null 2>&1
           else
-            echo "$stamp - Jeff arrived at the studio.";
+            echo "$stamp - Jeff $verbiage_positive at the studio.";
             /usr/local/bin/gpio -g write $pin_jeff 1 > /dev/null 2>&1
           fi
           lastjeff=$jeff
         fi
 
-        sleep 10
+        verbiage_negative="has left"
+        verbiage_positive="has arrived"
       done
 
   else
