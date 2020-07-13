@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<!--[if IE 9]>         <html class="ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html lang="en"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+
+        <title>Category5 TV Dash</title>
+
+        <meta name="description" content="A futuristic dashboard by pixelcave. You can download it from https://pixelcave.com">
+        <meta name="author" content="pixelcave">
+        <meta name="robots" content="noindex, nofollow">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
+
+        <!-- Favicons (just the basics for now, check out http://realfavicongenerator.net/ for all available) -->
+        <link rel="shortcut icon" href="assets/img/favicon.png">
+        <link rel="icon" type="image/png" href="assets/img/favicon.png" sizes="32x32">
+
+        <!-- Web fonts -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Do+Hyeon|Raleway:200,300,400,600,700&Open+Sans:300,400,600,700">
+
+        <!-- Bootstrap and Ares CSS -->
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/css/animate.min.css">
+        <link rel="stylesheet" href="assets/css/ares.css">
+
+        <script>
+          window.onload = function () {
+              "use strict";
+              var paths = document.getElementsByTagName('path');
+              var visualizer = document.getElementById('visualizer');
+              var mask = visualizer.getElementById('mask');
+              var h = document.getElementById('audiodata');
+              var path;
+              var report = 0;
+
+              var soundAllowed = function (stream) {
+                  window.persistAudioStream = stream;
+                  h.innerHTML = "Loading...";
+                  h.setAttribute('style', 'opacity: 0;');
+                  var audioContent = new AudioContext();
+                  var audioStream = audioContent.createMediaStreamSource( stream );
+                  var analyser = audioContent.createAnalyser();
+                  audioStream.connect(analyser);
+                  analyser.fftSize = 1024;
+
+                  var frequencyArray = new Uint8Array(analyser.frequencyBinCount);
+                  visualizer.setAttribute('viewBox', '0 0 255 255');
+
+                  //Through the frequencyArray has a length longer than 255, there seems to be no
+                  //significant data after this point. Not worth visualizing.
+                  for (var i = 0 ; i < 255; i++) {
+                      path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                      path.setAttribute('stroke-dasharray', '4,1');
+                      mask.appendChild(path);
+                  }
+                  var doDraw = function () {
+                      requestAnimationFrame(doDraw);
+                      analyser.getByteFrequencyData(frequencyArray);
+                      var adjustedLength;
+                      for (var i = 0 ; i < 255; i++) {
+                          adjustedLength = Math.floor(frequencyArray[i]) - (Math.floor(frequencyArray[i]) % 5);
+                          paths[i].setAttribute('d', 'M '+ (i) +',255 l 0,-' + adjustedLength);
+                      }
+
+                  }
+                  doDraw();
+              }
+
+              var soundNotAllowed = function (error) {
+                  h.innerHTML = "Mic Disabled";
+                  console.log(error);
+              }
+
+              navigator.getUserMedia({audio:true}, soundAllowed, soundNotAllowed);
+
+          };
+        </script>
+        <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            background:transparent;
+            font-size: 0;
+        }
+
+        svg {
+          display: block;
+          width: 100%;
+          height: 100%;
+          padding: 0;
+          margin: 0;
+          position:absolute;
+        }
+
+        .audiodata {
+          width: 100%;
+          font-family: sans-serif;
+          position:absolute;
+          text-align:center;
+          color:white;
+          font-size: 18px;
+          top: 40%;
+          opacity: 1;
+          transition: opacity 1s ease-in-out;
+          -moz-transition: opacity 1s ease-in-out;
+          -webkit-transition: opacity 1s ease-in-out;
+        }
+
+        .audiodata a {
+          color: #48b1f4;
+          text-decoration:none;
+        }
+
+        path {
+          stroke-linecap: square;
+          stroke: white;
+          stroke-width: 0.5px;
+        }
+
+        .countdown {
+          font-family: 'Do Hyeon', sans-serif;
+
+          margin: auto;
+          position: absolute;
+          top: 0;
+          left: 0;
+          bottom: 0;
+          right: 0;
+          width: 200px;
+          height: 60px;
+          color: green !important;
+          text-shadow: none !important;
+          text-align: center;
+          font: 50px/60px 'DIGITAL', Helvetica;
+        }
+        </style>
+    </head>
+    <body>
+        <!-- Page Container -->
+        <!--
+            Available Classes: 'modern-sf', 'vintage-sf', 'interstellar-sf'
+        -->
+        <div id="page-container" class="modern-sf">
+            <!-- Header -->
+            <header id="page-header">
+                <div class="h3 text-right pull-right hidden-xs">
+                    <div class="text-crystal font-w300">Video Feed</div>
+                    <div class="text-success animated infinite pull-right" id="live_indicator">Checking API</div>
+                </div>
+                <h1 class="h3 font-w200">
+                    <span class="text-crystal">//</span> <a class="link-sf font-w300" href="index.html">Category5 Technology TV</a>
+                </h1>
+            </header>
+            <!-- END Header -->
+
+            <!-- Main Content -->
+            <main id="page-main">
+                <!-- Columns -->
+                <div class="row">
+                    <!-- Animated Circles Column -->
+                    <div class="col-lg-6 col-lg-push-3 overflow-hidden push-20">
+                        <div class="circles push-50">
+                            <div class="visibility-hidden" data-toggle="appear" data-class="animated fadeIn">
+                                <span class="circle circle-0"></span>
+                            </div>
+                            <div class="visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="100">
+                                <span class="circle circle-1"></span>
+                            </div>
+                            <div class="visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="200">
+                                <span class="circle circle-2"></span>
+                            </div>
+                            <div class="visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="300">
+                                <span class="circle circle-3"></span>
+                            </div>
+                            <div class="visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="400">
+                                <span class="circle circle-4"></span>
+                            </div>
+                            <div class="visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="500">
+                                <span class="circle circle-5"></span>
+                            </div>
+                            <div class="visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="600">
+                                <span class="circle circle-6"></span>
+                            </div>
+                            <div class="visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="800">
+                                <span class="circle circle-over-1 hidden-xs" id="clock_seconds">00</span>
+                                <span class="circle circle-over-2 hidden-xs"></span>
+                                <span class="circle circle-over-3 hidden-xs"></span>
+                            </div>
+                            <span class="circle circles-main-content visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="100">
+                                <span id="clock_time">00:00</span><br>
+                                <span class="text-crystal" id="greek"></span>
+                            </span>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
+                                <button class="btn btn-xl btn-block btn-sf push-10">DATA_DRIVE</button>
+                            </div>
+                            <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="100">
+                                <button class="btn btn-xl btn-block btn-sf push-10">PO_DATABASE</button>
+                            </div>
+                            <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="500">
+                                <button class="btn btn-xl btn-block btn-sf">ACTIVE_ROUTE</button>
+                            </div>
+                            <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="500">
+                                <button class="btn btn-xl btn-block btn-sf">AUTO_PILOT</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END Animated Circles Column -->
+
+                    <!-- Left Column -->
+                    <div class="col-sm-6 col-lg-3 col-lg-pull-6">
+                        <!-- Environment -->
+                        <div class="block">
+                            <div class="block-header overflow-hidden">
+                                <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">Environment</h2>
+                            </div>
+                            <div class="block-content">
+                                <div class="row items-push overflow-hidden">
+                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
+                                        <div class="js-pie-chart pie-chart" data-percent="50" data-line-width="5" data-size="65" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="rgba(255, 255, 255, .1)">
+                                            <span class="font-s16 font-w600">PSI</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="400">
+                                        <div class="text-uppercase font-w600 text-white-op">Pressure</div>
+                                        <div class="font-s36 font-w300">15.65</div>
+                                    </div>
+                                </div>
+                                <div class="row items-push overflow-hidden">
+                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="200">
+                                        <div class="js-pie-chart pie-chart" data-percent="29" data-line-width="5" data-size="65" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="rgba(255, 255, 255, .1)">
+                                            <span class="font-s16 font-w600">%</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="500">
+                                        <div class="text-uppercase font-w600 text-white-op">Oxygen</div>
+                                        <div class="font-s36 font-w300">29.15</div>
+                                    </div>
+                                </div>
+                                <div class="row items-push overflow-hidden">
+                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="300">
+                                        <div class="js-pie-chart pie-chart" data-percent="60" data-line-width="5" data-size="65" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="rgba(255, 255, 255, .1)">
+                                            <span class="font-s16 font-w600">C&deg;</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="600">
+                                        <div class="text-uppercase font-w600 text-white-op">Temperature</div>
+                                        <div class="font-s36 font-w300">5.3</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END Environment -->
+
+                        <!-- Planets -->
+                        <div class="block">
+                            <div class="block-header overflow-hidden">
+                                <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">Planets</h2>
+                            </div>
+                            <div class="block-content">
+                                <div class="row items-push overflow-hidden">
+                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
+                                        <div class="js-pie-chart pie-chart" data-percent="100" data-line-width="20" data-size="45" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="#c07635">
+                                            <span class="font-s16 font-w600"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="400">
+                                        <div class="text-uppercase font-w600 text-white-op">Mars</div>
+                                        <div class="font-s36 font-w300">1.67 <span class="font-s16 font-w400 text-crystal">L.Y.</span></div>
+                                    </div>
+                                </div>
+                                <div class="row items-push overflow-hidden">
+                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="200">
+                                        <div class="js-pie-chart pie-chart" data-percent="100" data-line-width="22" data-size="50" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="#3673cc">
+                                            <span class="font-s16 font-w600"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="500">
+                                        <div class="text-uppercase font-w600 text-white-op">Earth</div>
+                                        <div class="font-s36 font-w300">1.62 <span class="font-s16 font-w400 text-crystal">L.Y.</span></div>
+                                    </div>
+                                </div>
+                                <div class="row items-push overflow-hidden">
+                                    <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="300">
+                                        <div class="js-pie-chart pie-chart" data-percent="100" data-line-width="30" data-size="70" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="#f7c880">
+                                            <span class="font-s16 font-w600"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="600">
+                                        <div class="text-uppercase font-w600 text-white-op">Saturn</div>
+                                        <div class="font-s36 font-w300">2.22 <span class="font-s16 font-w400 text-crystal">L.Y.</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END Planets -->
+                    </div>
+                    <!-- END Left Column -->
+
+                    <!-- Right Column -->
+                    <div class="col-sm-6 col-lg-3">
+
+                        <!-- HQ_COMS -->
+                        <div class="block">
+                            <div class="block-header overflow-hidden">
+                                <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">HQ_COMS</h2>
+                            </div>
+                            <div class="block-content overflow-hidden">
+                                <div class="row items-push">
+                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="300">
+                                        <div class="font-s24 font-w300 text-white-op">C1 [<span class="text-success">40</span>]</div>
+                                    </div>
+                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="500">
+                                        <div class="font-s24 font-w300 text-white-op">C2 [<span class="text-success">60</span>]</div>
+                                    </div>
+                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="700">
+                                        <div class="font-s24 font-w300 text-white-op">C3 [<span class="text-success">80</span>]</div>
+                                    </div>
+                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="900">
+                                        <div class="font-s24 font-w300 text-white-op">C4 [<span class="text-success">90</span>]</div>
+                                    </div>
+                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="1100">
+                                        <div class="font-s24 font-w300 text-white-op">C5 [<span class="text-success">20</span>]</div>
+                                    </div>
+                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="1300">
+                                        <div class="font-s24 font-w300 text-white-op">C6 [<span class="text-success">30</span>]</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END HQ_COMS -->
+
+                        <!-- POS_TRACKING -->
+                        <div class="block">
+                            <div class="block-header overflow-hidden">
+                                <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">POS_TRACKING</h2>
+                            </div>
+                            <div class="block-content block-content-full overflow-hidden">
+                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="100">X: 95</div>
+                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
+                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" style="width: 95%"></div>
+                                </div>
+                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="300">Y: 49</div>
+                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="300">
+                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100" style="width: 49%"></div>
+                                </div>
+                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="500">Z: 59</div>
+                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="500">
+                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="59" aria-valuemin="0" aria-valuemax="100" style="width: 59%"></div>
+                                </div>
+                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="700">V: +60</div>
+                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="700">
+                                    <div class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END POS_TRACKING -->
+
+                        <!-- DATA_STREAM -->
+                        <div class="block">
+                            <div class="block-header overflow-hidden">
+                                <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">SPECTRUM ANALYSIS</h2>
+                            </div>
+                            <div class="block-content">
+                                <div class="row items-push">
+                                    <div class="col-xs-12 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="100" style="height:150px; overflow:hidden;">
+                                      <svg preserveAspectRatio="none" id="visualizer" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                          <defs>
+
+                                              <mask id="mask">
+                                                  <g id="maskGroup">
+                                                </g>
+                                              </mask>
+                                              <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                  <stop offset="0%" style="stop-color:#fff;stop-opacity:1" />
+
+                                                  <stop offset="100%" style="stop-color:#1264c5;stop-opacity:1" />
+                                              </linearGradient>
+                                          </defs>
+                                          <rect x="0" y="0" width="100%" height="100%" fill="url(#gradient)" mask="url(#mask)"></rect>
+                                      </svg>
+                                      <div id="audiodata"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END DATA_STREAM -->
+
+                        <div class="block">
+                            <div class="block-header overflow-hidden">
+                                <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">Time will be <span id="next_minute">00:00</span> in</h2>
+                            </div>
+                            <div class="block-content overflow-hidden">
+                                <div class="row items-push">
+                                    <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="300">
+                                        <div class="countdown">00</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                    <!-- END Right Column -->
+                </div>
+                <!-- END Columns -->
+
+            </main>
+            <!-- END Main Content -->
+        </div>
+        <!-- END Page Container -->
+
+        <!-- Scripts -->
+        <script src="assets/js/core/jquery.min.js"></script>
+        <script src="assets/js/plugins/jquery.appear.min.js"></script>
+        <script src="assets/js/plugins/jquery.countTo.min.js"></script>
+        <script src="assets/js/plugins/jquery.easypiechart.min.js"></script>
+        <script src="assets/js/ares.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/danielgindi-jquery-backstretch/2.1.15/jquery.backstretch.min.js"></script>
+
+        <!-- Page JS Code -->
+        <script>
+            jQuery(function(){
+                // Init page helpers (Appear + CountTo + Easy Pie Chart plugins)
+                Ares.initHelpers(['appear', 'appear-countTo', 'easy-pie-chart']);
+            });
+            $('html').backstretch([
+    			       { url: "assets/video/bg.mp4", duration: 5000, mute: true, alignY: 0, isVideo: true, loop: true }
+            ]);
+
+            $(document).ready(function() {
+              clockUpdate();
+              checkDirectory();
+              setInterval(clockUpdate, 1000);
+            })
+
+            function clockUpdate() {
+              var date = new Date();
+              $('.countdown').css({'color': '#fff', 'text-shadow': '0 0 6px #ff0'});
+              function addZero(x) {
+                if (x < 10) {
+                  return x = '0' + x;
+                } else {
+                  return x;
+                }
+              }
+
+              function twelveHour(x) {
+                if (x > 12) {
+                  return x = x - 12;
+                } else if (x == 0) {
+                  return x = 12;
+                } else {
+                  return x;
+                }
+              }
+
+              var h = twelveHour(date.getHours());
+              var m = addZero(date.getMinutes());
+              var s = addZero(date.getSeconds());
+
+              $('.countdown').text(addZero(60-s))
+              $('#clock_time').text(h+':'+m);
+              $('#clock_seconds').text(s);
+              if (m == 59) {
+                $('#next_minute').text((h+1)+':00');
+              } else {
+                $('#next_minute').text(h+':'+addZero(m+1));
+              }
+            }
+
+            var isFinished = false;
+            var checkDirectory = function () {
+                if (isFinished) {
+                    clearInterval(checkDirectoryInterval);
+                    return;
+                }
+                $.ajax({
+                    url: "https://live.cat5.tv/api/realtime",
+                    type: "GET",
+                    success: function (data) {
+                      if (data == 1) {
+                        $("#live_indicator").html('[<span style="color: yellow;">On The Air</span>]');
+                      } else if (data == 0) {
+                        $("#live_indicator").html('[<span style="color: red;">Off The Air</span>]');
+                      } else {
+                        $("#live_indicator").html('[<span style="color: red; font-weight: bold;">API ERROR</span>]');
+                      }
+                    }
+                });
+            };
+            var interval = 15000;
+            var checkDirectoryInterval = setInterval(checkDirectory, interval);
+
+            const greeks = ['χρόνος'];
+            const greek = greeks[Math.floor(Math.random() * greeks.length)];
+            $('#greek').text(greek);
+
+        </script>
+    </body>
+</html>
