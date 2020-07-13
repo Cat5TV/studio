@@ -119,6 +119,10 @@
           stroke-width: 0.5px;
         }
 
+        #clock_time {
+          font-family: 'Do Hyeon', sans-serif;
+        }
+
         #countdown {
           font-family: 'Do Hyeon', sans-serif;
 
@@ -136,11 +140,10 @@
         }
 
         .red {
-          color: red !important;
+          color: rgba(231, 76, 60, 1) !important;
         }
-
         .green {
-          color: green !important;
+          color: #2ecc71 !important;
         }
 
         #next_minute {
@@ -507,10 +510,10 @@
                         $("#live_indicator").html('[<span style="color: yellow;">On The Air</span>]');
                         $("#live_indicator").removeClass('pulse');
                       } else if (data == 0) {
-                        $("#live_indicator").html('[<span style="color: red;">Off The Air</span>]');
+                        $("#live_indicator").html('[<span class="red">Off The Air</span>]');
                         $("#live_indicator").addClass('pulse');
                       } else {
-                        $("#live_indicator").html('[<span style="color: red; font-weight: bold;">API ERROR</span>]');
+                        $("#live_indicator").html('[<span class="red">API ERROR</span>]');
                         $("#live_indicator").addClass('pulse');
                       }
                     }
