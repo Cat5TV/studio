@@ -119,7 +119,7 @@
           stroke-width: 0.5px;
         }
 
-        .countdown {
+        #countdown {
           font-family: 'Do Hyeon', sans-serif;
 
           margin: auto;
@@ -130,11 +130,23 @@
           right: 0;
           width: 200px;
           height: 60px;
-          color: green !important;
           text-shadow: none !important;
           text-align: center;
           font: 50px/60px 'DIGITAL', Helvetica;
         }
+
+        .red {
+          color: red !important;
+        }
+
+        .green {
+          color: green !important;
+        }
+
+        #next_minute {
+          color: #777 !important;
+        }
+
         </style>
     </head>
     <body>
@@ -243,7 +255,7 @@
                                 <div class="row items-push overflow-hidden">
                                     <div class="col-xs-4 text-center visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="300">
                                         <div class="js-pie-chart pie-chart" data-percent="60" data-line-width="5" data-size="65" data-bar-color="rgba(255, 255, 255, .2)" data-track-color="rgba(255, 255, 255, .1)">
-                                            <span class="font-s16 font-w600">C&deg;</span>
+                                            <span class="font-s16 font-w600">&deg;C</span>
                                         </div>
                                     </div>
                                     <div class="col-xs-8 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="600">
@@ -396,7 +408,7 @@
                             <div class="block-content overflow-hidden">
                                 <div class="row items-push">
                                     <div class="col-xs-6 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="300">
-                                        <div class="countdown">00</div>
+                                        <div id="countdown">00</div>
                                     </div>
                                 </div>
                             </div>
@@ -441,7 +453,7 @@
 
             function clockUpdate() {
               var date = new Date();
-              $('.countdown').css({'color': '#fff', 'text-shadow': '0 0 6px #ff0'});
+              $('#countdown').css({'color': '#fff', 'text-shadow': '0 0 6px #ff0'});
               function addZero(x) {
                 if (x < 10) {
                   return x = '0' + x;
@@ -464,7 +476,14 @@
               var m = addZero(date.getMinutes());
               var s = addZero(date.getSeconds());
 
-              $('.countdown').text(addZero(60-s))
+              $('#countdown').text(addZero(60-s))
+              if ((60-s) <= 10) {
+                $('#countdown').removeClass('green');
+                $('#countdown').addClass('red');
+              } else {
+                $('#countdown').removeClass('red');
+                $('#countdown').addClass('green');
+              }
               $('#clock_time').text(h+':'+m);
               $('#clock_seconds').text(s);
               if (m == 59) {
@@ -486,10 +505,13 @@
                     success: function (data) {
                       if (data == 1) {
                         $("#live_indicator").html('[<span style="color: yellow;">On The Air</span>]');
+                        $("#live_indicator").removeClass('pulse');
                       } else if (data == 0) {
                         $("#live_indicator").html('[<span style="color: red;">Off The Air</span>]');
+                        $("#live_indicator").addClass('pulse');
                       } else {
                         $("#live_indicator").html('[<span style="color: red; font-weight: bold;">API ERROR</span>]');
+                        $("#live_indicator").addClass('pulse');
                       }
                     }
                 });
