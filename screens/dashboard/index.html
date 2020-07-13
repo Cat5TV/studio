@@ -473,8 +473,8 @@
               }
 
               var h = twelveHour(date.getHours());
-              var m = addZero(date.getMinutes());
-              var s = addZero(date.getSeconds());
+              var m = date.getMinutes();
+              var s = date.getSeconds();
 
               $('#countdown').text(addZero(60-s))
               if ((60-s) <= 10) {
@@ -484,8 +484,8 @@
                 $('#countdown').removeClass('red');
                 $('#countdown').addClass('green');
               }
-              $('#clock_time').text(h+':'+m);
-              $('#clock_seconds').text(s);
+              $('#clock_time').text(h+':'+addZero(m));
+              $('#clock_seconds').text(addZero(s));
               if (m == 59) {
                 $('#next_minute').text((h+1)+':00');
               } else {
