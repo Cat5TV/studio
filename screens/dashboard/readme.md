@@ -10,4 +10,9 @@ Functional Items:
 
 The rest is all just eye candy at this point.
 
-Probably works better in Chromium-based browsers. Firefox doesn't support some of the media stuff.
+While it's supposed to be supported in major browsers, I had better success with getUserMedia in Chromium-based browsers. Firefox didn't work at all for the spectrum analyzer.
+https://caniuse.com/#feat=stream
+
+
+Would like to add webcam:
+https://github.com/SamFleming/userCam
