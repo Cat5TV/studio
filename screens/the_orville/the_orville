@@ -1,0 +1,5 @@
+#!/bin/bash
+# This is to be run on a Raspberry Pi. In the studio, it's on an old Pi 2.
+# Does not require Internet.
+
+omxplayer -b --loop --no-osd -local the_orville.mp4
