@@ -7,6 +7,7 @@ Functional Items:
 - Clock uses system clock and displays hours, minutes and seconds.
 - Countdown to top of next minute.
 - Spectrum analyzer will show ambient noise if you have a mic connected (and are using a browser that supports it).
+- Disk usage graph. Requires running via ./launch-server and access at http://localhost:8000
 
 The rest is all just eye candy at this point.
 
