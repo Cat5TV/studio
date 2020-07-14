@@ -353,12 +353,31 @@
                             <div class="block-header overflow-hidden">
                                 <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">DISK_USAGE</h2>
                             </div>
+
                             <div class="block-content block-content-full overflow-hidden">
-                                <div class="font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="100">X: 95</div>
+
+                                <div class="font-s14 font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="100">DATA_ARRAY</div>
                                 <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
-                                    <div id="diskusage_root" class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" style="width: 0%"></div>
+                                    <div id="diskusage_arr1" class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" style="width: 0%"></div>
                                 </div>
+
+                                <div class="font-s14 font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="100">SERVER_OS</div>
+                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
+                                    <div id="diskusage_arr2" class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" style="width: 0%"></div>
+                                </div>
+
+                                <div class="font-s14 font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="100">ARAID_BACKUP</div>
+                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
+                                    <div id="diskusage_arr3" class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" style="width: 0%"></div>
+                                </div>
+
+                                <div class="font-s14 font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="100">SD_CARD</div>
+                                <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
+                                    <div id="diskusage_sd" class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" style="width: 0%"></div>
+                                </div>
+
                             </div>
+
                         </div>
                         <!-- END POS_TRACKING -->
 
@@ -511,14 +530,26 @@
             function readDiskUsage() {
               // This only works if you have the PHP server running with launch-server
 
-              path='/';
-              $.ajax({
-                url: "http://localhost:8000/assets/ajax/diskusage.php",
-                type: "POST",
-                data:{"path":path}
-              }).done(function(data) {
-                $("#diskusage_root").css('width',data);
+              path='/mnt/arr1';
+              $.ajax({url: "http://localhost:8000/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
+                $("#diskusage_arr1").css('width',data);
               });
+
+              path='/mnt/arr2';
+              $.ajax({url: "http://localhost:8000/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
+                $("#diskusage_arr2").css('width',data);
+              });
+
+              path='/mnt/arr3';
+              $.ajax({url: "http://localhost:8000/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
+                $("#diskusage_arr3").css('width',data);
+              });
+
+              path='/';
+              $.ajax({url: "http://localhost:8000/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
+                $("#diskusage_sd").css('width',data);
+              });
+
 
             }
 
