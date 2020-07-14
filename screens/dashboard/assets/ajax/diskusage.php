@@ -1,6 +1,7 @@
 <?php
 
   $path = isset($_REQUEST['path']) ? $_REQUEST['path'] : '/';
+  if (!file_exists($path)) exit('100%');
 
   /* get disk space free (in bytes) */
   $df = disk_free_space($path);

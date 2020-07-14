@@ -531,22 +531,22 @@
               // This only works if you have the PHP server running with launch-server
 
               path='/mnt/arr1';
-              $.ajax({url: "http://localhost:8000/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
+              $.ajax({url: "/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
                 $("#diskusage_arr1").css('width',data);
               });
 
               path='/mnt/arr2';
-              $.ajax({url: "http://localhost:8000/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
+              $.ajax({url: "/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
                 $("#diskusage_arr2").css('width',data);
               });
 
               path='/mnt/arr3';
-              $.ajax({url: "http://localhost:8000/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
+              $.ajax({url: "/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
                 $("#diskusage_arr3").css('width',data);
               });
 
               path='/';
-              $.ajax({url: "http://localhost:8000/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
+              $.ajax({url: "/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
                 $("#diskusage_sd").css('width',data);
               });
 
