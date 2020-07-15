@@ -358,7 +358,7 @@
 
                                 <div class="font-s14 font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="100">DATA_ARRAY</div>
                                 <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
-                                    <div id="diskusage_arr1" class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" style="width: 0%"></div>
+                                    <div id="diskusage_arr1" class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" style="width: 0%;"></div>
                                 </div>
 
                                 <div class="font-s14 font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="100">SERVER_OS</div>
@@ -527,27 +527,40 @@
             const greek = greeks[Math.floor(Math.random() * greeks.length)];
             $('#greek').text(greek);
 
+            function getColor(value){
+              var hue=((1-value)*120).toString(10);
+              if (value == 1) {
+                return ["hsl(",hue,",100%,50%)"].join("");
+              } else {
+                return ["hsla(",hue,",100%,50%,",(value/2),")"].join("");
+              }
+            }
+
             function readDiskUsage() {
               // This only works if you have the PHP server running with launch-server
 
               path='/mnt/arr1';
               $.ajax({url: "/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
-                $("#diskusage_arr1").css('width',data);
+                $("#diskusage_arr1").css('width',data+'%');
+                $("#diskusage_arr1").css('background-color',getColor(data/100));
               });
 
               path='/mnt/arr2';
               $.ajax({url: "/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
-                $("#diskusage_arr2").css('width',data);
+                $("#diskusage_arr2").css('width',data+'%');
+                $("#diskusage_arr2").css('background-color',getColor(data/100));
               });
 
               path='/mnt/arr3';
               $.ajax({url: "/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
-                $("#diskusage_arr3").css('width',data);
+                $("#diskusage_arr3").css('width',data+'%');
+                $("#diskusage_arr3").css('background-color',getColor(data/100));
               });
 
               path='/';
               $.ajax({url: "/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
-                $("#diskusage_sd").css('width',data);
+                $("#diskusage_sd").css('width',data+'%');
+                $("#diskusage_sd").css('background-color',getColor(data/100));
               });
 
 
