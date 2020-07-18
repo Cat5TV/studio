@@ -3,7 +3,7 @@ if [[ ! -e /usr/bin/unclutter ]] || [[ ! -e /usr/bin/php ]]; then
   sudo apt-get update
 fi
 if [[ ! -e /usr/bin/unclutter ]]; then
-  sudo apt-get install -y unclutter
+  sudo apt-get install -y unclutter &
 fi
 unclutter -idle 5 -root
 if [[ ! -e /usr/bin/php ]]; then
