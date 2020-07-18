@@ -1,13 +1,13 @@
 #!/bin/bash
 if [[ ! -e /usr/bin/unclutter ]] || [[ ! -e /usr/bin/php ]]; then
-  apt-get update
+  sudo apt-get update
 fi
 if [[ ! -e /usr/bin/unclutter ]]; then
-  apt-get install -y unclutter
+  sudo apt-get install -y unclutter
 fi
 unclutter -idle 5 -root
 if [[ ! -e /usr/bin/php ]]; then
-  apt-get install -y php
+  sudo apt-get install -y php
 fi
 php -S localhost:8000
 #chromium-browser --kiosk http://localhost:8000
