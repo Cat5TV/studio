@@ -5,9 +5,14 @@ fi
 if [[ ! -e /usr/bin/unclutter ]]; then
   sudo apt-get install -y unclutter
 fi
+killall -9 unclutter
 unclutter -idle 5 -root &
 if [[ ! -e /usr/bin/php ]]; then
   sudo apt-get install -y php
+fi
+simplexml=$(php -m | grep -i simplexml);
+if [[ $simplexml == '' ]]; then
+  sudo apt-get install -y php-xml
 fi
 php -S localhost:8000
 #chromium-browser --kiosk http://localhost:8000
