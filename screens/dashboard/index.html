@@ -151,7 +151,7 @@
           color: #beb20c !important;
         }
 
-        #next_minute {
+        #next_minute, #next_five_minutes {
           color: #777 !important;
         }
 
@@ -483,7 +483,7 @@
 
                         <div class="block">
                             <div class="block-header overflow-hidden">
-                                <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">Time will be <span id="nextFiveMinutes">00:00</span> in</h2>
+                                <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">Time will be <span id="next_five_minutes">00:00</span> in</h2>
                             </div>
                             <div class="block-content overflow-hidden">
                                 <div class="row items-push">
@@ -599,7 +599,7 @@
                 roundedM = roundedDate.getMinutes();
                 return roundedH + ':' + addZero(roundedM)
               }
-              $('#nextFiveMinutes').text(getRoundedDate(5));
+              $('#next_five_minutes').text(getRoundedDate(5));
 
               if ((60-s) <= 10) {
                 $('#countdown').removeClass('green');
