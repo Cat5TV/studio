@@ -67,7 +67,7 @@
               }
 
               var soundNotAllowed = function (error) {
-                  h.innerHTML = "Mic Disabled";
+                  h.innerHTML = "Sound Input Disabled";
                   console.log(error);
               }
 
@@ -81,8 +81,8 @@
             height: 100%;
             padding: 0;
             margin: 0;
-            background:transparent;
-            font-size: 0;
+/*            background:transparent;*/
+            font-size: 10px;
         }
 
         svg {
@@ -147,9 +147,16 @@
         .orange {
           color: #d09e22 !important;
         }
+        .yellow {
+          color: #beb20c !important;
+        }
 
         #next_minute {
           color: #777 !important;
+        }
+
+        #greek {
+          font-size: 0.6em;
         }
 
 .marquee {
@@ -287,6 +294,39 @@
 
                     <!-- Left Column -->
                     <div class="col-sm-6 col-lg-3 col-lg-pull-6">
+
+
+                        <!-- DATA_STREAM -->
+                        <div class="block">
+                            <div class="block-header overflow-hidden">
+                                <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">SPECTRUM_ANALYSIS</h2>
+                            </div>
+                            <div class="block-content">
+                                <div class="row items-push">
+                                    <div class="col-xs-12 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="100" style="height:150px; overflow:hidden;">
+                                      <svg preserveAspectRatio="none" id="visualizer" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                          <defs>
+
+                                              <mask id="mask">
+                                                  <g id="maskGroup">
+                                                </g>
+                                              </mask>
+                                              <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                  <stop offset="0%" style="stop-color:#fff;stop-opacity:1" />
+
+                                                  <stop offset="100%" style="stop-color:#1264c5;stop-opacity:1" />
+                                              </linearGradient>
+                                          </defs>
+                                          <rect x="0" y="0" width="100%" height="100%" fill="url(#gradient)" mask="url(#mask)"></rect>
+                                      </svg>
+                                      <div id="audiodata"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END DATA_STREAM -->
+
+
                         <!-- Environment -->
                         <div class="block">
                             <div class="block-header overflow-hidden">
@@ -441,36 +481,6 @@
                         </div>
                         <!-- END POS_TRACKING -->
 
-                        <!-- DATA_STREAM -->
-                        <div class="block">
-                            <div class="block-header overflow-hidden">
-                                <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">SPECTRUM_ANALYSIS</h2>
-                            </div>
-                            <div class="block-content">
-                                <div class="row items-push">
-                                    <div class="col-xs-12 visibility-hidden" data-toggle="appear" data-class="animated fadeIn" data-timeout="100" style="height:150px; overflow:hidden;">
-                                      <svg preserveAspectRatio="none" id="visualizer" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                          <defs>
-
-                                              <mask id="mask">
-                                                  <g id="maskGroup">
-                                                </g>
-                                              </mask>
-                                              <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                                  <stop offset="0%" style="stop-color:#fff;stop-opacity:1" />
-
-                                                  <stop offset="100%" style="stop-color:#1264c5;stop-opacity:1" />
-                                              </linearGradient>
-                                          </defs>
-                                          <rect x="0" y="0" width="100%" height="100%" fill="url(#gradient)" mask="url(#mask)"></rect>
-                                      </svg>
-                                      <div id="audiodata"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- END DATA_STREAM -->
-
                         <div class="block">
                             <div class="block-header overflow-hidden">
                                 <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">Time will be <span id="nextFiveMinutes">00:00</span> in</h2>
@@ -524,9 +534,9 @@
                 // Init page helpers (Appear + CountTo + Easy Pie Chart plugins)
                 Ares.initHelpers(['appear', 'appear-countTo', 'easy-pie-chart']);
             });
-            $('html').backstretch([
-    			       { url: "assets/video/bg.mp4", duration: 5000, mute: true, alignY: 0, isVideo: true, loop: true }
-            ]);
+//            $('html').backstretch([
+//    			       { url: "assets/video/bg.mp4", duration: 5000, mute: true, alignY: 0, isVideo: true, loop: true }
+//            ]);
 
             function clockUpdate() {
               var date = new Date();
@@ -571,8 +581,11 @@
                 $('#countdownFiveMinutes').removeClass('orange');
                 $('#countdownFiveMinutes').addClass('red');
               } else if (fiver <= 30) {
-                $('#countdownFiveMinutes').removeClass('green');
+                $('#countdownFiveMinutes').removeClass('yellow');
                 $('#countdownFiveMinutes').addClass('orange');
+              } else if (fiver <= 60) {
+                $('#countdownFiveMinutes').removeClass('green');
+                $('#countdownFiveMinutes').addClass('yellow');
               } else if (fiver <= 90) {
                 $('#countdownFiveMinutes').addClass('green');
               } else {
