@@ -578,21 +578,32 @@
                 $('#countdown').addClass('green');
               }
 
-              var fiver=((((4 - m % 5)*60) + (59 - s)) + 1);
+              var fiver=addZero((((4 - m % 5)*60) + (59 - s)) + 1);
               $('#countdownFiveMinutes').text(fiver);
-              if (fiver <= 10) {
-                $('#countdownFiveMinutes').removeClass('orange');
-                $('#countdownFiveMinutes').addClass('red');
-              } else if (fiver <= 30) {
-                $('#countdownFiveMinutes').removeClass('yellow');
-                $('#countdownFiveMinutes').addClass('orange');
-              } else if (fiver <= 60) {
-                $('#countdownFiveMinutes').removeClass('green');
-                $('#countdownFiveMinutes').addClass('yellow');
+              if (fiver == 60 || fiver == 90 || fiver == 30 || fiver == 15 || fiver == 0) {
+                $('#countdownFiveMinutes').css('color','#fff');
+              } else if (fiver <= 8) {
+                $('#countdownFiveMinutes').css('color','#cc2e2e');
+              } else if (fiver <= 16) {
+                $('#countdownFiveMinutes').css('color','#cc442e');
+              } else if (fiver <= 24) {
+                $('#countdownFiveMinutes').css('color','#cc6b2e');
+              } else if (fiver <= 32) {
+                $('#countdownFiveMinutes').css('color','#cc802e');
+              } else if (fiver <= 40) {
+                $('#countdownFiveMinutes').css('color','#cc962e');
+              } else if (fiver <= 48) {
+                $('#countdownFiveMinutes').css('color','#ccb02e');
+              } else if (fiver <= 56) {
+                $('#countdownFiveMinutes').css('color','#c6cc2e');
+              } else if (fiver <= 64) {
+                $('#countdownFiveMinutes').css('color','#9fcc2e');
+              } else if (fiver <= 72) {
+                $('#countdownFiveMinutes').css('color','#6bcc2e');
+              } else if (fiver <= 80) {
+                $('#countdownFiveMinutes').css('color','#2ecc37');
               } else if (fiver <= 90) {
-                $('#countdownFiveMinutes').addClass('green');
-              } else {
-                $('#countdownFiveMinutes').removeClass('red');
+                $('#countdownFiveMinutes').css('color','#2ecc71');
               }
 
               let getRoundedDate = (minutes, d=new Date()) => {
@@ -653,12 +664,12 @@
             const greek = greeks[Math.floor(Math.random() * greeks.length)];
             $('#greek').text(greek);
 
-            function getColor(value){
+            function getColor(value,alpha){
               var hue=((1-value)*120).toString(10);
               if (value == 1) {
-                return ["hsl(",hue,",100%,50%)"].join("");
+                return ["hsl(",hue,",100%,",alpha,"%)"].join("");
               } else {
-                return ["hsla(",hue,",100%,50%,",(value/2),")"].join("");
+                return ["hsla(",hue,",100%,",alpha,"%,",(value/2),")"].join("");
               }
             }
 
@@ -668,25 +679,25 @@
               path='/mnt/arr1';
               $.ajax({url: "/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
                 $("#diskusage_arr1").css('width',data+'%');
-                $("#diskusage_arr1").css('background-color',getColor(data/100));
+                $("#diskusage_arr1").css('background-color',getColor((data/100),50));
               });
 
               path='/mnt/arr2';
               $.ajax({url: "/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
                 $("#diskusage_arr2").css('width',data+'%');
-                $("#diskusage_arr2").css('background-color',getColor(data/100));
+                $("#diskusage_arr2").css('background-color',getColor((data/100),50));
               });
 
               path='/mnt/arr3';
               $.ajax({url: "/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
                 $("#diskusage_arr3").css('width',data+'%');
-                $("#diskusage_arr3").css('background-color',getColor(data/100));
+                $("#diskusage_arr3").css('background-color',getColor((data/100),50));
               });
 
               path='/';
               $.ajax({url: "/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
                 $("#diskusage_sd").css('width',data+'%');
-                $("#diskusage_sd").css('background-color',getColor(data/100));
+                $("#diskusage_sd").css('background-color',getColor((data/100),50));
               });
 
             }
