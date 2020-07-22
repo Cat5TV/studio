@@ -23,6 +23,8 @@
         <link rel="stylesheet" href="assets/css/animate.min.css">
         <link rel="stylesheet" href="assets/css/ares.css">
 
+        <script src="assets/js/core/jquery.min.js"></script>
+
         <script>
           window.onload = function () {
               "use strict";
@@ -68,7 +70,9 @@
 
               var soundNotAllowed = function (error) {
                   h.innerHTML = "Sound Input Disabled";
+                  console.log('Sound input is disabled on your browser. Enable it to add Spectrum Analysis.');
                   console.log(error);
+                  $('#spectrum').hide();
               }
 
               navigator.getUserMedia({audio:true}, soundAllowed, soundNotAllowed);
@@ -297,7 +301,7 @@
 
 
                         <!-- DATA_STREAM -->
-                        <div class="block">
+                        <div class="block" id="spectrum">
                             <div class="block-header overflow-hidden">
                                 <h2 class="block-title visibility-hidden" data-toggle="appear" data-class="animated fadeInDown">SPECTRUM_ANALYSIS</h2>
                             </div>
@@ -521,7 +525,6 @@
         <!-- END Page Container -->
 
         <!-- Scripts -->
-        <script src="assets/js/core/jquery.min.js"></script>
         <script src="assets/js/plugins/jquery.appear.min.js"></script>
         <script src="assets/js/plugins/jquery.countTo.min.js"></script>
         <script src="assets/js/plugins/jquery.easypiechart.min.js"></script>
