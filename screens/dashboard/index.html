@@ -186,7 +186,7 @@
    content: '';
    position: absolute;
    display: block;
-   background-image: 
+   background-image:
     repeating-linear-gradient(0deg, #23277600, #23277600 1px, #040a2444 1px, #040a2444 3px),
     repeating-linear-gradient(90deg, #23277600, #23277600 2px, #040a2444 2px, #040a2444 3px);
    width: 100%;
@@ -239,7 +239,7 @@
             </header>
             <!-- END Header -->
 
-            <marquee direction="left" speed="normal" behavior="loop" id="marquee" class="marquee">All Systems Nominal</marquee>
+            <div id="marquee"><marquee direction="left" speed="normal" behavior="loop" id="marquee" class="marquee">All Systems Nominal</marquee></div>
 
             <!-- Main Content -->
             <main id="page-main">
@@ -541,69 +541,72 @@
 //    			       { url: "assets/video/bg.mp4", duration: 5000, mute: true, alignY: 0, isVideo: true, loop: true }
 //            ]);
 
+
+            function addZero(x) {
+              if (x < 10) {
+                return x = '0' + x;
+              } else {
+                return x;
+              }
+            }
+
+            function twelveHour(x) {
+              if (x > 12) {
+                return x = x - 12;
+              } else if (x == 0) {
+                return x = 12;
+              } else {
+                return x;
+              }
+            }
+
             function clockUpdate() {
               var date = new Date();
+              var countdown = $('#countdown');
+              var countdownFiveMinutes = $('#countdownFiveMinutes');
 
-              $('#countdown').css({'color': '#fff', 'text-shadow': '0 0 6px #ff0'});
-              $('#countdownFiveMinutes').css({'color': '#fff', 'text-shadow': '0 0 6px #ff0'});
-
-              function addZero(x) {
-                if (x < 10) {
-                  return x = '0' + x;
-                } else {
-                  return x;
-                }
-              }
-
-              function twelveHour(x) {
-                if (x > 12) {
-                  return x = x - 12;
-                } else if (x == 0) {
-                  return x = 12;
-                } else {
-                  return x;
-                }
-              }
+              countdown.css({'color': '#fff', 'text-shadow': '0 0 6px #ff0'});
+              countdownFiveMinutes.css({'color': '#fff', 'text-shadow': '0 0 6px #ff0'});
 
               var h = twelveHour(date.getHours());
               var m = date.getMinutes();
               var s = date.getSeconds();
 
-              $('#countdown').text(addZero(60-s))
+              countdown.text(addZero(60-s))
               if ((60-s) <= 10) {
-                $('#countdown').removeClass('green');
-                $('#countdown').addClass('red');
+                countdown.removeClass('green');
+                countdown.addClass('red');
               } else {
-                $('#countdown').removeClass('red');
-                $('#countdown').addClass('green');
+                countdown.removeClass('red');
+                countdown.addClass('green');
               }
 
               var fiver=addZero((((4 - m % 5)*60) + (59 - s)) + 1);
-              $('#countdownFiveMinutes').text(fiver);
+              countdownFiveMinutes.text(fiver);
               if (fiver == 60 || fiver == 90 || fiver == 30 || fiver == 15 || fiver == 0) {
-                $('#countdownFiveMinutes').css('color','#fff');
+                countdownFiveMinutes.css('color','#fff');
               } else if (fiver <= 8) {
-                $('#countdownFiveMinutes').css('color','#cc2e2e');
+                countdownFiveMinutes.css('color','#cc2e2e');
               } else if (fiver <= 16) {
-                $('#countdownFiveMinutes').css('color','#cc442e');
+                countdownFiveMinutes.css('color','#cc442e');
               } else if (fiver <= 24) {
-                $('#countdownFiveMinutes').css('color','#cc6b2e');
+                countdownFiveMinutes.css('color','#cc6b2e');
               } else if (fiver <= 32) {
-                $('#countdownFiveMinutes').css('color','#cc802e');
+                countdownFiveMinutes.css('color','#cc802e');
               } else if (fiver <= 40) {
-                $('#countdownFiveMinutes').css('color','#cc962e');
+                countdownFiveMinutes.css('color','#cc962e');
               } else if (fiver <= 48) {
-                $('#countdownFiveMinutes').css('color','#ccb02e');
+                countdownFiveMinutes.css('color','#ccb02e');
               } else if (fiver <= 56) {
-                $('#countdownFiveMinutes').css('color','#c6cc2e');
+                countdownFiveMinutes.css('color','#c6cc2e');
               } else if (fiver <= 64) {
-                $('#countdownFiveMinutes').css('color','#9fcc2e');
+                countdownFiveMinutes.css('color','#9fcc2e');
               } else if (fiver <= 72) {
-                $('#countdownFiveMinutes').css('color','#6bcc2e');
+                countdownFiveMinutes.css('color','#6bcc2e');
               } else if (fiver <= 80) {
-                $('#countdownFiveMinutes').css('color','#2ecc37');
+                countdownFiveMinutes.css('color','#2ecc37');
               } else if (fiver <= 90) {
-                $('#countdownFiveMinutes').css('color','#2ecc71');
+                countdownFiveMinutes.css('color','#2ecc71');
               }
 
               let getRoundedDate = (minutes, d=new Date()) => {
@@ -616,11 +619,11 @@
               $('#next_five_minutes').text(getRoundedDate(5));
 
               if ((60-s) <= 10) {
-                $('#countdown').removeClass('green');
-                $('#countdown').addClass('red');
+                countdown.removeClass('green');
+                countdown.addClass('red');
               } else {
-                $('#countdown').removeClass('red');
-                $('#countdown').addClass('green');
+                countdown.removeClass('red');
+                countdown.addClass('green');
               }
 
               if (m == 59) {
@@ -635,9 +638,9 @@
             }
 
             var isFinished = false;
-            var checkDirectory = function () {
+            var Cat5TV_API = function () {
                 if (isFinished) {
-                    clearInterval(checkDirectoryInterval);
+                    clearInterval(Cat5TV_API_Interval);
                     return;
                 }
                 $.ajax({
@@ -645,26 +648,23 @@
                     type: "GET",
                     success: function (data) {
                       if (data == 1) {
-                        $("#live_indicator").html('[<span style="color: yellow;">On The Air</span>]');
-                        $("#live_indicator").removeClass('pulse');
+                        $("#live_indicator").html('[<span style="color: yellow;">On The Air</span>]').removeClass('pulse');
                       } else if (data == 0) {
-                        $("#live_indicator").html('[<span class="red">Off The Air</span>]');
-                        $("#live_indicator").addClass('pulse');
+                        $("#live_indicator").html('[<span class="red">Off The Air</span>]').addClass('pulse');
                       } else {
-                        $("#live_indicator").html('[<span class="red">API ERROR</span>]');
-                        $("#live_indicator").addClass('pulse');
+                        $("#live_indicator").html('[<span class="red">API ERROR</span>]').addClass('pulse');
                       }
                     }
                 });
             };
             var interval = 15000;
-            var checkDirectoryInterval = setInterval(checkDirectory, interval);
+            var Cat5TV_API_Interval = setInterval(Cat5TV_API, interval);
 
             const greeks = ['χρόνος'];
             const greek = greeks[Math.floor(Math.random() * greeks.length)];
             $('#greek').text(greek);
 
-            function getColor(value,alpha){
+            function getColor(value,alpha) {
               var hue=((1-value)*120).toString(10);
               if (value == 1) {
                 return ["hsl(",hue,",100%,",alpha,"%)"].join("");
@@ -678,45 +678,46 @@
 
               path='/mnt/arr1';
               $.ajax({url: "/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
-                $("#diskusage_arr1").css('width',data+'%');
-                $("#diskusage_arr1").css('background-color',getColor((data/100),50));
+                $("#diskusage_arr1").css({'width':data+'%','background-color':getColor((data/100),50)});
               });
 
               path='/mnt/arr2';
               $.ajax({url: "/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
-                $("#diskusage_arr2").css('width',data+'%');
-                $("#diskusage_arr2").css('background-color',getColor((data/100),50));
+                $("#diskusage_arr2").css({'width':data+'%','background-color':getColor((data/100),50)});
               });
 
               path='/mnt/arr3';
               $.ajax({url: "/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
-                $("#diskusage_arr3").css('width',data+'%');
-                $("#diskusage_arr3").css('background-color',getColor((data/100),50));
+                $("#diskusage_arr3").css({'width':data+'%','background-color':getColor((data/100),50)});
               });
 
               path='/';
               $.ajax({url: "/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
-                $("#diskusage_sd").css('width',data+'%');
-                $("#diskusage_sd").css('background-color',getColor((data/100),50));
+                $("#diskusage_sd").css({'width':data+'%','background-color':getColor((data/100),50)});
               });
 
             }
 
-            feed='https://feeds.feedburner.com/arstechnica/technology-lab';
+            var marquee; // Will use this to check if the RSS respons has changed, and only update the marquee if it has.
             function readRSS() {
+              feed='https://feeds.feedburner.com/arstechnica/technology-lab'; // Change this to any RSS feed you like. Default is Ars Technica.
               $.ajax({url: "/assets/ajax/rssfeed.php",type: "POST",data:{"feed":feed}}).done(function(data) {
-                $("#marquee").html(data);
+                marqueeResp = '<marquee direction="left" speed="normal" behavior="loop" id="marquee" class="marquee">' + data + '</marquee>';
+                if (marquee != marqueeResp) { // Only replace the RSS marquee if it changed
+                  marquee = marqueeResp; // Save the current AJAX response for later comparison
+                  $('#marquee').html(marquee); // Reload the marquee with the current response
+                }
               });
             }
 
             $(document).ready(function() {
               clockUpdate();
-              checkDirectory();
-              setInterval(clockUpdate, 1000);
+              Cat5TV_API();
               readDiskUsage();
-              setInterval(readDiskUsage,60000);
               readRSS();
-              setInterval(readRSS,600000);
+              setInterval(clockUpdate, 1000);
+              setInterval(readDiskUsage,60000);
+              setInterval(readRSS,900000); // Read the RSS feed every 15 minutes
             })
 
         </script>
