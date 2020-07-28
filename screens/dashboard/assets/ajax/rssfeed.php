@@ -1,5 +1,4 @@
 <?php
-
   $feedurl = isset($_REQUEST['feed']) ? $_REQUEST['feed'] : 'https://category5.tv/feed';
   $feed = @simplexml_load_file($feedurl);
   $count=0;

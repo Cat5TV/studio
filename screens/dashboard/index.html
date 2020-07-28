@@ -218,6 +218,10 @@
     }
    }
 
+.dupercent {
+  color: #444;
+}
+
         </style>
     </head>
     <body>
@@ -460,22 +464,22 @@
 
                             <div class="block-content block-content-full overflow-hidden">
 
-                                <div class="font-s14 font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="100">DATA_ARRAY</div>
+                                <div class="font-s14 font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="100">DATA_ARRAY <span class="dupercent" id="dupercent1">100%</span></div>
                                 <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
                                     <div id="diskusage_arr1" class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" style="width: 0%;"></div>
                                 </div>
 
-                                <div class="font-s14 font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="100">SERVER_OS</div>
+                                <div class="font-s14 font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="100">SERVER_OS <span class="dupercent" id="dupercent2">100%</span></div>
                                 <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
                                     <div id="diskusage_arr2" class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" style="width: 0%"></div>
                                 </div>
 
-                                <div class="font-s14 font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="100">ARAID_BACKUP</div>
+                                <div class="font-s14 font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="100">ARAID_BACKUP <span class="dupercent" id="dupercent3">100%</span></div>
                                 <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
                                     <div id="diskusage_arr3" class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" style="width: 0%"></div>
                                 </div>
 
-                                <div class="font-s14 font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="100">SD_CARD</div>
+                                <div class="font-s14 font-w600 text-white-op push-5 visibility-hidden" data-toggle="appear" data-class="animated fadeInRight" data-timeout="100">SD_CARD <span class="dupercent" id="dupercent4">100%</span></div>
                                 <div class="progress visibility-hidden" data-toggle="appear" data-class="animated fadeInLeft" data-timeout="100">
                                     <div id="diskusage_sd" class="progress-bar progress-bar-sf progress-bar-striped active" role="progressbar" style="width: 0%"></div>
                                 </div>
@@ -679,21 +683,25 @@
               path='/mnt/arr1';
               $.ajax({url: "/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
                 $("#diskusage_arr1").css({'width':data+'%','background-color':getColor((data/100),50)});
+                $("#dupercent1").text(Math.round(data)+'%');
               });
 
               path='/mnt/arr2';
               $.ajax({url: "/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
                 $("#diskusage_arr2").css({'width':data+'%','background-color':getColor((data/100),50)});
+                $("#dupercent2").text(Math.round(data)+'%');
               });
 
               path='/mnt/arr3';
               $.ajax({url: "/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
                 $("#diskusage_arr3").css({'width':data+'%','background-color':getColor((data/100),50)});
+                $("#dupercent3").text(Math.round(data)+'%');
               });
 
               path='/';
               $.ajax({url: "/assets/ajax/diskusage.php",type: "POST",data:{"path":path}}).done(function(data) {
                 $("#diskusage_sd").css({'width':data+'%','background-color':getColor((data/100),50)});
+                $("#dupercent4").text(Math.round(data)+'%');
               });
 
             }
