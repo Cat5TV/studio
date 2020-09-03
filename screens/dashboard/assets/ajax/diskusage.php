@@ -3,6 +3,9 @@
   $path = isset($_REQUEST['path']) ? $_REQUEST['path'] : '/';
   if (!file_exists($path)) exit('100');
 
+  // if o is set, grab it. This lets us change the output version to something other than just percent usage
+  $o = isset($_REQUEST['o']) ? $_REQUEST['o'] : 'percent';
+
   /* get disk space free (in bytes) */
   $df = disk_free_space($path);
   /* and get disk space total (in bytes)  */
@@ -12,7 +15,7 @@
   /* percentage of disk used - this will be used to also set the width % of the progress bar */
   $dp = sprintf('%.2f',($du / $dt) * 100);
 
-  /* and we formate the size from bytes to MB, GB, etc. */
+  /* Format the size from bytes to MB, GB, etc. */
   $df = formatSize($df);
   $du = formatSize($du);
   $dt = formatSize($dt);
@@ -23,6 +26,10 @@
     return( round( $bytes, 2 ) . " " . $types[$i] );
   }
 
-  echo $dp;
+  if ($o == 'percent') {
+    echo $dp;
+  } elseif ($o == 'use') {
+    echo $du . ' / ' . $dt;
+  }
 
 ?>

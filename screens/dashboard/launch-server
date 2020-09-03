@@ -14,5 +14,5 @@ simplexml=$(php -m | grep -i simplexml);
 if [[ $simplexml == '' ]]; then
   sudo apt-get install -y php-xml
 fi
-php -S localhost:8000
+php -S 10.0.0.10:8000
 #chromium-browser --kiosk http://localhost:8000
